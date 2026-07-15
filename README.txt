@@ -20,28 +20,6 @@
   - AI_API_KEY=（可选）启用 WorkBuddy LLM 扩展
 
 【课程印象最深内容】
-  1. 契约先行（OpenAPI First）
-     OpenAPI 3.1.0 作为前后端"单一事实来源"，所有接口定义、请求参数、
-     响应格式、错误处理都在 contracts/openapi.yaml 中声明。前端 fetch、
-     后端路由、测试断言都以此为准，避免了"前后端各自理解接口"的经典问题。
-
-  2. 四态组件模式（Loading / Error / Empty / Success）
-     每个数据驱动的组件都覆盖四种状态：加载骨架屏（animate-pulse）、
-     错误横幅（可重试）、空结果提示、正常数据展示。这看似简单，却是
-     前端可靠性的基础——用户在任何网络条件下都能理解当前发生了什么。
-
-  3. 并发安全设计
-     预测提交使用 UNIQUE(match_id, user_name) 数据库约束 + 比赛截止时间
-     检查的双重保护，从根源上防止重复提交和过期预测。这让我认识到：
-     并发控制不能只靠前端按钮 disable，必须在后端有硬约束。
-
-【Docker 镜像下载 因过大无法上传github】
-  百度网盘：https://pan.baidu.com/s/12hAXFp2huN594YPMaayICA?pwd=ufwq
-  提取码：ufwq
-  文件：worldcup-platform-amd64.tar（341MB）
-  使用方式：docker load -i worldcup-platform-amd64.tar
-
-【课程印象最深内容】
   1. Web 架构演进：从静态到 AI 驱动
      课程从 1989 年 Tim Berners-Lee 的 World Wide Web 讲起，梳理了
      Web 1.0（静态文档）→ Web 2.0（AJAX/SPA/API）→ Web 3.0（语义化/
@@ -71,3 +49,9 @@
      调用 Chrome DevTools 调试页面。但课程也强调：AI 生成的是候选实现，
      是否完成要由契约测试、状态码断言和人工审查共同证明——这个判断力
      才是开发者不可替代的核心能力。
+
+【Docker 镜像下载 因过大无法上传github】
+  百度网盘：https://pan.baidu.com/s/12hAXFp2huN594YPMaayICA?pwd=ufwq
+  提取码：ufwq
+  文件：worldcup-platform-amd64.tar（341MB）
+  使用方式：docker load -i worldcup-platform-amd64.tar
