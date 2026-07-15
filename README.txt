@@ -37,6 +37,12 @@
      检查的双重保护，从根源上防止重复提交和过期预测。这让我认识到：
      并发控制不能只靠前端按钮 disable，必须在后端有硬约束。
 
+【Docker 镜像下载】
+  百度网盘：https://pan.baidu.com/s/12hAXFp2huN594YPMaayICA?pwd=ufwq
+  提取码：ufwq
+  文件：worldcup-platform-amd64.tar（341MB）
+  使用方式：docker load -i worldcup-platform-amd64.tar
+
   4. 渐进增强的 Agent 架构
      WorkBuddy 从基于关键词的规则引擎起步（7 种意图、零外部 API 依赖），
      同时预留了 LLM 扩展点（设置 AI_API_KEY 即可启用）。这种"先跑起来
