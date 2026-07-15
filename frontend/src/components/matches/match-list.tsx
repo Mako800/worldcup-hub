@@ -7,7 +7,13 @@ import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { ErrorBanner } from "@/components/shared/error-banner";
 import { EmptyState } from "@/components/shared/empty-state";
 
-type Team = { id: number; name: string; nameZh: string; shortName: string; logoColor: string };
+type Team = {
+  id: number;
+  name: string;
+  nameZh: string;
+  shortName: string;
+  logoColor: string;
+};
 type MatchData = {
   id: number;
   homeTeam: Team;
@@ -66,11 +72,18 @@ export function MatchList() {
         <h2 id="matches-heading" className="text-2xl font-bold text-slate-900">
           赛事列表
         </h2>
-        <MatchFilter status={status} matchday={matchday} onFilter={handleFilter} />
+        <MatchFilter
+          status={status}
+          matchday={matchday}
+          onFilter={handleFilter}
+        />
       </div>
 
       {error ? (
-        <ErrorBanner message={error} onRetry={() => handleFilter(status, matchday)} />
+        <ErrorBanner
+          message={error}
+          onRetry={() => handleFilter(status, matchday)}
+        />
       ) : loading ? (
         <LoadingSpinner count={6} />
       ) : matches.length > 0 ? (
@@ -80,7 +93,11 @@ export function MatchList() {
           ))}
         </div>
       ) : (
-        <EmptyState icon="🏟" title="没有找到比赛" description="尝试调整筛选条件" />
+        <EmptyState
+          icon="🏟"
+          title="没有找到比赛"
+          description="尝试调整筛选条件"
+        />
       )}
     </section>
   );

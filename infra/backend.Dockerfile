@@ -1,6 +1,6 @@
 FROM node:24-alpine AS build
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json .npmrc ./
 COPY frontend/package.json frontend/package.json
 COPY backend/package.json backend/package.json
 RUN npm ci

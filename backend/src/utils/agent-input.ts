@@ -6,7 +6,8 @@ export function parseAgentInput(value: unknown): AgentRequest {
   }
 
   const message = typeof value.message === "string" ? value.message.trim() : "";
-  const userName = typeof value.userName === "string" ? value.userName.trim() : "";
+  const userName =
+    typeof value.userName === "string" ? value.userName.trim() : "";
 
   if (message.length < 1 || message.length > 500) {
     throw new TypeError("message 长度必须在 1 到 500 个字符之间");

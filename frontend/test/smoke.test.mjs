@@ -7,13 +7,25 @@ test("frontend test runner is configured", () => {
 
 test("API response types match contract expectations", () => {
   // Health response shape
-  const health = { status: "ok", service: "worldcup-platform-api", timestamp: new Date().toISOString() };
+  const health = {
+    status: "ok",
+    service: "worldcup-platform-api",
+    timestamp: new Date().toISOString(),
+  };
   assert.equal(health.status, "ok");
   assert.equal(health.service, "worldcup-platform-api");
   assert.ok(typeof health.timestamp === "string");
 
   // Team response shape
-  const team = { id: 1, name: "Argentina", nameZh: "阿根廷", shortName: "ARG", stadium: "Estadio Monumental", founded: 1893, logoColor: "#75aadb" };
+  const team = {
+    id: 1,
+    name: "Argentina",
+    nameZh: "阿根廷",
+    shortName: "ARG",
+    stadium: "Estadio Monumental",
+    founded: 1893,
+    logoColor: "#75aadb",
+  };
   assert.equal(typeof team.id, "number");
   assert.equal(typeof team.nameZh, "string");
 

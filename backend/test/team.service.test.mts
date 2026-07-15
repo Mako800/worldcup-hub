@@ -63,14 +63,22 @@ test("Match response shape matches OpenAPI MatchWithTeams schema", () => {
     awayScore: 1,
     venue: "2026世界杯 A组",
     homeTeam: {
-      id: 1, name: "Argentina", nameZh: "阿根廷",
-      shortName: "ARG", stadium: "Estadio Monumental",
-      founded: 1893, logoColor: "#75aadb",
+      id: 1,
+      name: "Argentina",
+      nameZh: "阿根廷",
+      shortName: "ARG",
+      stadium: "Estadio Monumental",
+      founded: 1893,
+      logoColor: "#75aadb",
     },
     awayTeam: {
-      id: 2, name: "Denmark", nameZh: "丹麦",
-      shortName: "DEN", stadium: "Parken Stadium",
-      founded: 1889, logoColor: "#c8102e",
+      id: 2,
+      name: "Denmark",
+      nameZh: "丹麦",
+      shortName: "DEN",
+      stadium: "Parken Stadium",
+      founded: 1889,
+      logoColor: "#c8102e",
     },
     predictionCount: 5,
     commentCount: 3,
@@ -117,11 +125,17 @@ test("Standing shape matches OpenAPI Standing schema", () => {
   assert.equal(typeof standing.points, "number");
   assert.equal(typeof standing.goalDifference, "number");
   // goalDifference = goalsFor - goalsAgainst
-  assert.equal(standing.goalDifference, standing.goalsFor - standing.goalsAgainst);
+  assert.equal(
+    standing.goalDifference,
+    standing.goalsFor - standing.goalsAgainst,
+  );
   // points = wins * 3 + draws
   assert.equal(standing.points, standing.wins * 3 + standing.draws);
   // played = wins + draws + losses
-  assert.equal(standing.played, standing.wins + standing.draws + standing.losses);
+  assert.equal(
+    standing.played,
+    standing.wins + standing.draws + standing.losses,
+  );
 });
 
 test("Standings are sorted by points DESC, goal difference DESC, goals for DESC", () => {
@@ -139,7 +153,8 @@ test("Standings are sorted by points DESC, goal difference DESC, goals for DESC"
     // Primary: points
     assert.ok(
       prev.points > curr.points ||
-      (prev.points === curr.points && prev.goalDifference >= curr.goalDifference),
+        (prev.points === curr.points &&
+          prev.goalDifference >= curr.goalDifference),
       `${prev.teamNameZh} should rank above ${curr.teamNameZh}`,
     );
   }

@@ -9,9 +9,13 @@ export function EmptyState({
 }) {
   return (
     <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 py-16 text-center">
-      <span className="text-4xl" aria-hidden="true">{icon}</span>
+      <span className="text-4xl" aria-hidden="true">
+        {icon}
+      </span>
       <p className="mt-4 text-lg font-semibold text-slate-700">{title}</p>
-      {description && <p className="mt-2 text-sm text-slate-500">{description}</p>}
+      {description && (
+        <p className="mt-2 text-sm text-slate-500">{description}</p>
+      )}
     </div>
   );
 }

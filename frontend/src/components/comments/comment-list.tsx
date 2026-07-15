@@ -11,7 +11,13 @@ type CommentData = {
   createdAt: string;
 };
 
-export function CommentList({ matchId, refreshKey }: { matchId: number; refreshKey: number }) {
+export function CommentList({
+  matchId,
+  refreshKey,
+}: {
+  matchId: number;
+  refreshKey: number;
+}) {
   const [comments, setComments] = useState<CommentData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,15 +33,28 @@ export function CommentList({ matchId, refreshKey }: { matchId: number; refreshK
     return () => controller.abort();
   }, [matchId, refreshKey]);
 
-  if (loading) return <div className="h-24 animate-pulse rounded-xl bg-slate-200" />;
-  if (comments.length === 0) return <EmptyState icon="💬" title="暂无评论" description="成为第一个评论的人！" />;
+  if (loading)
+    return <div className="h-24 animate-pulse rounded-xl bg-slate-200" />;
+  if (comments.length === 0)
+    return (
+      <EmptyState
+        icon="💬"
+        title="暂无评论"
+        description="成为第一个评论的人！"
+      />
+    );
 
   return (
     <div className="space-y-3">
       {comments.map((c) => (
-        <div key={c.id} className="rounded-xl border border-slate-200 bg-white p-4">
+        <div
+          key={c.id}
+          className="rounded-xl border border-slate-200 bg-white p-4"
+        >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold text-slate-900">{c.userName}</span>
+            <span className="text-sm font-semibold text-slate-900">
+              {c.userName}
+            </span>
             <span className="text-xs text-slate-400">
               {new Date(c.createdAt).toLocaleDateString("zh-CN", {
                 month: "short",

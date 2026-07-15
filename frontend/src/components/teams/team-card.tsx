@@ -10,7 +10,15 @@ type TeamCardProps = {
   logoColor: string;
 };
 
-export function TeamCard({ id, name, nameZh, shortName, stadium, founded, logoColor }: TeamCardProps) {
+export function TeamCard({
+  id,
+  name,
+  nameZh,
+  shortName,
+  stadium,
+  founded,
+  logoColor,
+}: TeamCardProps) {
   return (
     <Link
       href={`/teams/${id}`}
@@ -24,7 +32,9 @@ export function TeamCard({ id, name, nameZh, shortName, stadium, founded, logoCo
           {shortName}
         </div>
         <div>
-          <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition">{nameZh}</h3>
+          <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition">
+            {nameZh}
+          </h3>
           <p className="text-sm text-slate-500">{name}</p>
         </div>
       </div>

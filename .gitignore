@@ -31,12 +31,14 @@
 /backend/.midway-serverless/
 /backend/.faas_debug_tmp/
 
-# Runtime database files; keep the empty directory marker
+# Runtime database files; keep the empty directory marker and demo database
 /backend/data/*
 !/backend/data/.gitkeep
+!/backend/data/worldcup-platform-demo.sqlite
 
 # Root-level and shared build caches
 /dist/
+/.dist/
 /build/
 /out/
 /.cache/

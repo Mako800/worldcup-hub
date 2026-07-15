@@ -1,11 +1,17 @@
-export function LoadingSpinner({ count = 3, className = "" }: { count?: number; className?: string }) {
+export function LoadingSpinner({
+  count = 3,
+  className = "",
+}: {
+  count?: number;
+  className?: string;
+}) {
   return (
-    <div className={`grid gap-5 md:grid-cols-2 lg:grid-cols-3 ${className}`} aria-label="正在加载">
+    <div
+      className={`grid gap-5 md:grid-cols-2 lg:grid-cols-3 ${className}`}
+      aria-label="正在加载"
+    >
       {Array.from({ length: count }, (_, i) => (
-        <div
-          className="h-48 animate-pulse rounded-2xl bg-slate-200"
-          key={i}
-        />
+        <div className="h-48 animate-pulse rounded-2xl bg-slate-200" key={i} />
       ))}
     </div>
   );

@@ -25,7 +25,10 @@ export class CommentController {
   }
 
   @Post("/matches/:matchId/comments")
-  async createComment(@Param("matchId") matchId: string, @Body() body: unknown) {
+  async createComment(
+    @Param("matchId") matchId: string,
+    @Body() body: unknown,
+  ) {
     const numId = Number(matchId);
     if (!Number.isFinite(numId) || numId < 1) {
       throw new httpError.BadRequestError("无效的比赛 ID");

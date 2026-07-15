@@ -1,6 +1,15 @@
-export function ErrorBanner({ message, onRetry }: { message: string; onRetry?: () => void }) {
+export function ErrorBanner({
+  message,
+  onRetry,
+}: {
+  message: string;
+  onRetry?: () => void;
+}) {
   return (
-    <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-rose-900" role="alert">
+    <div
+      className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-rose-900"
+      role="alert"
+    >
       <p className="font-semibold">加载失败</p>
       <p className="mt-2 text-sm">{message}</p>
       {onRetry && (

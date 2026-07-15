@@ -45,7 +45,8 @@ test("parseCommentInput rejects short content (less than 2 chars)", () => {
 
 test("parseCommentInput rejects content over 1000 chars", () => {
   assert.throws(
-    () => parseCommentInput({ userName: "测试用户", content: "a".repeat(1001) }),
+    () =>
+      parseCommentInput({ userName: "测试用户", content: "a".repeat(1001) }),
     TypeError,
   );
 });
@@ -76,23 +77,15 @@ test("parseCommentInput rejects non-string userName", () => {
 });
 
 test("parseCommentInput rejects non-object input", () => {
-  assert.throws(
-    () => parseCommentInput("not an object"),
-    TypeError,
-  );
-  assert.throws(
-    () => parseCommentInput(null),
-    TypeError,
-  );
-  assert.throws(
-    () => parseCommentInput([1, 2, 3]),
-    TypeError,
-  );
+  assert.throws(() => parseCommentInput("not an object"), TypeError);
+  assert.throws(() => parseCommentInput(null), TypeError);
+  assert.throws(() => parseCommentInput([1, 2, 3]), TypeError);
 });
 
 test("parseCommentInput rejects userName over 30 chars", () => {
   assert.throws(
-    () => parseCommentInput({ userName: "a".repeat(31), content: "精彩的比赛" }),
+    () =>
+      parseCommentInput({ userName: "a".repeat(31), content: "精彩的比赛" }),
     TypeError,
   );
 });

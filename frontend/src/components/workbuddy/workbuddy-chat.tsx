@@ -66,8 +66,12 @@ export function WorkBuddyChat() {
     return (
       <div className="mx-auto max-w-md py-16 text-center">
         <span className="text-5xl">🤖</span>
-        <h2 className="mt-4 text-xl font-bold text-slate-900">欢迎使用 WorkBuddy</h2>
-        <p className="mt-2 text-sm text-slate-500">世界杯赛事智能助手，帮你快速了解赛事信息</p>
+        <h2 className="mt-4 text-xl font-bold text-slate-900">
+          欢迎使用 WorkBuddy
+        </h2>
+        <p className="mt-2 text-sm text-slate-500">
+          世界杯赛事智能助手，帮你快速了解赛事信息
+        </p>
         <form onSubmit={handleSetName} className="mt-6 flex gap-3">
           <input
             type="text"
@@ -97,12 +101,20 @@ export function WorkBuddyChat() {
         ))}
         {loading && (
           <div className="flex gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-sm">🤖</div>
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-sm">
+              🤖
+            </div>
             <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3">
               <div className="flex gap-1">
                 <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400" />
-                <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400" style={{ animationDelay: "0.1s" }} />
-                <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400" style={{ animationDelay: "0.2s" }} />
+                <span
+                  className="h-2 w-2 animate-bounce rounded-full bg-slate-400"
+                  style={{ animationDelay: "0.1s" }}
+                />
+                <span
+                  className="h-2 w-2 animate-bounce rounded-full bg-slate-400"
+                  style={{ animationDelay: "0.2s" }}
+                />
               </div>
             </div>
           </div>
@@ -126,7 +138,13 @@ export function WorkBuddyChat() {
       )}
 
       {/* Input */}
-      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex gap-3 border-t border-slate-200 pt-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSend();
+        }}
+        className="flex gap-3 border-t border-slate-200 pt-4"
+      >
         <input
           type="text"
           value={input}

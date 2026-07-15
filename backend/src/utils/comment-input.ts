@@ -5,7 +5,8 @@ export function parseCommentInput(value: unknown): CreateCommentInput {
     throw new TypeError("请求体必须是 JSON 对象");
   }
 
-  const userName = typeof value.userName === "string" ? value.userName.trim() : "";
+  const userName =
+    typeof value.userName === "string" ? value.userName.trim() : "";
   const content = typeof value.content === "string" ? value.content.trim() : "";
 
   if (userName.length < 2 || userName.length > 30) {

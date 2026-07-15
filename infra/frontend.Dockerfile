@@ -2,7 +2,7 @@ FROM node:24-alpine AS build
 WORKDIR /app
 ARG BACKEND_INTERNAL_URL=http://backend:7001
 ENV BACKEND_INTERNAL_URL=$BACKEND_INTERNAL_URL
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json .npmrc ./
 COPY frontend/package.json frontend/package.json
 COPY backend/package.json backend/package.json
 RUN npm ci

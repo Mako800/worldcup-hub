@@ -11,7 +11,10 @@ export class AgentController {
   async chat(@Body() body: unknown) {
     try {
       const input = parseAgentInput(body);
-      const response = this.agentService.processMessage(input.message, input.userName);
+      const response = this.agentService.processMessage(
+        input.message,
+        input.userName,
+      );
       return response;
     } catch (reason) {
       const message = reason instanceof Error ? reason.message : "请求无效";

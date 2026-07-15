@@ -50,9 +50,12 @@ export default function PredictionsPage() {
               const res = await fetch(`/api/matches/${mid}`);
               if (res.ok) {
                 const data = await res.json();
-                matchNamesMap[mid] = `${data.data.homeTeam.nameZh} vs ${data.data.awayTeam.nameZh}`;
+                matchNamesMap[mid] =
+                  `${data.data.homeTeam.nameZh} vs ${data.data.awayTeam.nameZh}`;
               }
-            } catch { /* ignore */ }
+            } catch {
+              /* ignore */
+            }
           }),
         );
         setMatchNames(matchNamesMap);
@@ -95,7 +98,11 @@ export default function PredictionsPage() {
       ) : loading ? (
         <LoadingSpinner count={3} />
       ) : searched && predictions.length === 0 ? (
-        <EmptyState icon="🔮" title="暂无预测记录" description={`用户 "${userName}" 还没有做出任何预测`} />
+        <EmptyState
+          icon="🔮"
+          title="暂无预测记录"
+          description={`用户 "${userName}" 还没有做出任何预测`}
+        />
       ) : predictions.length > 0 ? (
         <div className="space-y-3">
           {predictions.map((p) => (

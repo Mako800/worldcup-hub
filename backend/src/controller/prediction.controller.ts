@@ -10,7 +10,10 @@ import {
   Query,
 } from "@midwayjs/core";
 import { PredictionService } from "../service/prediction.service";
-import { parsePredictionInput, parseUpdatePredictionInput } from "../utils/prediction-input";
+import {
+  parsePredictionInput,
+  parseUpdatePredictionInput,
+} from "../utils/prediction-input";
 
 @Controller("/api")
 export class PredictionController {

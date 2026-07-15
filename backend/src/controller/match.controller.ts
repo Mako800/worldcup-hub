@@ -1,4 +1,11 @@
-import { Controller, Get, httpError, Inject, Param, Query } from "@midwayjs/core";
+import {
+  Controller,
+  Get,
+  httpError,
+  Inject,
+  Param,
+  Query,
+} from "@midwayjs/core";
 import { MatchService } from "../service/match.service";
 import { StandingsService } from "../service/standings.service";
 import { MatchFilters } from "../interface";
@@ -21,7 +28,9 @@ export class MatchController {
 
     if (status) {
       if (!["scheduled", "live", "finished"].includes(status)) {
-        throw new httpError.BadRequestError("status 必须是 scheduled、live 或 finished");
+        throw new httpError.BadRequestError(
+          "status 必须是 scheduled、live 或 finished",
+        );
       }
       filters.status = status as "scheduled" | "live" | "finished";
     }

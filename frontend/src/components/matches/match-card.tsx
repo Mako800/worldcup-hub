@@ -39,10 +39,27 @@ type MatchCardProps = {
   commentCount: number;
 };
 
-export function MatchCard({ id, homeTeam, awayTeam, matchDate, matchday, status, homeScore, awayScore, predictionCount, commentCount }: MatchCardProps) {
+export function MatchCard({
+  id,
+  homeTeam,
+  awayTeam,
+  matchDate,
+  matchday,
+  status,
+  homeScore,
+  awayScore,
+  predictionCount,
+  commentCount,
+}: MatchCardProps) {
   const date = new Date(matchDate);
-  const dateStr = date.toLocaleDateString("zh-CN", { month: "short", day: "numeric" });
-  const timeStr = date.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
+  const dateStr = date.toLocaleDateString("zh-CN", {
+    month: "short",
+    day: "numeric",
+  });
+  const timeStr = date.toLocaleTimeString("zh-CN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <Link

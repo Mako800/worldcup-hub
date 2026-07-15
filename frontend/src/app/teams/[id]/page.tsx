@@ -18,7 +18,15 @@ const STAGE_LABELS: Record<number, string> = {
   7: "决赛/三四名",
 };
 
-type TeamData = { id: number; name: string; nameZh: string; shortName: string; stadium: string; founded: number; logoColor: string };
+type TeamData = {
+  id: number;
+  name: string;
+  nameZh: string;
+  shortName: string;
+  stadium: string;
+  founded: number;
+  logoColor: string;
+};
 type MatchData = {
   id: number;
   homeTeam: TeamData;
@@ -32,7 +40,11 @@ type MatchData = {
   commentCount: number;
 };
 
-export default function TeamDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default function TeamDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = use(params);
   const [team, setTeam] = useState<TeamData | null>(null);
   const [matches, setMatches] = useState<MatchData[]>([]);
@@ -47,7 +59,8 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
           fetch(`/api/teams/${id}`, { signal: controller.signal }),
           fetch(`/api/matches?teamId=${id}`, { signal: controller.signal }),
         ]);
-        if (!teamRes.ok) throw new Error(teamRes.status === 404 ? "球队不存在" : "加载失败");
+        if (!teamRes.ok)
+          throw new Error(teamRes.status === 404 ? "球队不存在" : "加载失败");
         const teamData = await teamRes.json();
         setTeam(teamData.data);
         if (matchRes.ok) {
@@ -64,23 +77,26 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
     return () => controller.abort();
   }, [id]);
 
-  if (loading) return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
-      <LoadingSpinner count={3} />
-    </main>
-  );
+  if (loading)
+    return (
+      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
+        <LoadingSpinner count={3} />
+      </main>
+    );
 
-  if (error) return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
-      <ErrorBanner message={error} />
-    </main>
-  );
+  if (error)
+    return (
+      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
+        <ErrorBanner message={error} />
+      </main>
+    );
 
-  if (!team) return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
-      <EmptyState icon="⚽" title="球队不存在" />
-    </main>
-  );
+  if (!team)
+    return (
+      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
+        <EmptyState icon="⚽" title="球队不存在" />
+      </main>
+    );
 
   const finished = matches.filter((m) => m.status === "finished");
   const upcoming = matches.filter((m) => m.status === "scheduled");
@@ -109,7 +125,9 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
       <section className="space-y-8">
         {upcoming.length > 0 && (
           <div>
-            <h2 className="text-xl font-bold text-slate-900 mb-4">📅 即将进行的比赛</h2>
+            <h2 className="text-xl font-bold text-slate-900 mb-4">
+              📅 即将进行的比赛
+            </h2>
             <div className="space-y-3">
               {upcoming.slice(0, 5).map((m) => (
                 <Link
@@ -118,9 +136,19 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
                   className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 hover:shadow-sm transition"
                 >
                   <div className="flex items-center gap-4">
-                    <TeamBadge name={m.homeTeam.name} nameZh={m.homeTeam.nameZh} shortName={m.homeTeam.shortName} logoColor={m.homeTeam.logoColor} />
+                    <TeamBadge
+                      name={m.homeTeam.name}
+                      nameZh={m.homeTeam.nameZh}
+                      shortName={m.homeTeam.shortName}
+                      logoColor={m.homeTeam.logoColor}
+                    />
                     <span className="text-sm text-slate-400">VS</span>
-                    <TeamBadge name={m.awayTeam.name} nameZh={m.awayTeam.nameZh} shortName={m.awayTeam.shortName} logoColor={m.awayTeam.logoColor} />
+                    <TeamBadge
+                      name={m.awayTeam.name}
+                      nameZh={m.awayTeam.nameZh}
+                      shortName={m.awayTeam.shortName}
+                      logoColor={m.awayTeam.logoColor}
+                    />
                   </div>
                   <div className="text-right">
                     <StatusBadge status={m.status} />
@@ -136,7 +164,9 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
 
         {finished.length > 0 && (
           <div>
-            <h2 className="text-xl font-bold text-slate-900 mb-4">✅ 已完成的比赛</h2>
+            <h2 className="text-xl font-bold text-slate-900 mb-4">
+              ✅ 已完成的比赛
+            </h2>
             <div className="space-y-3">
               {finished.slice(0, 10).map((m) => (
                 <Link
@@ -145,13 +175,27 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
                   className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-4 hover:shadow-sm transition"
                 >
                   <div className="flex items-center gap-4">
-                    <TeamBadge name={m.homeTeam.name} nameZh={m.homeTeam.nameZh} shortName={m.homeTeam.shortName} logoColor={m.homeTeam.logoColor} score={m.homeScore} />
+                    <TeamBadge
+                      name={m.homeTeam.name}
+                      nameZh={m.homeTeam.nameZh}
+                      shortName={m.homeTeam.shortName}
+                      logoColor={m.homeTeam.logoColor}
+                      score={m.homeScore}
+                    />
                     <span className="text-sm text-slate-400">VS</span>
-                    <TeamBadge name={m.awayTeam.name} nameZh={m.awayTeam.nameZh} shortName={m.awayTeam.shortName} logoColor={m.awayTeam.logoColor} score={m.awayScore} />
+                    <TeamBadge
+                      name={m.awayTeam.name}
+                      nameZh={m.awayTeam.nameZh}
+                      shortName={m.awayTeam.shortName}
+                      logoColor={m.awayTeam.logoColor}
+                      score={m.awayScore}
+                    />
                   </div>
                   <div className="text-right">
                     <StatusBadge status="finished" />
-                    <p className="text-xs text-slate-500 mt-1">{STAGE_LABELS[m.matchday] ?? `第${m.matchday}轮`}</p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      {STAGE_LABELS[m.matchday] ?? `第${m.matchday}轮`}
+                    </p>
                   </div>
                 </Link>
               ))}

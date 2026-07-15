@@ -21,7 +21,15 @@ const STAGE_LABELS: Record<number, string> = {
   7: "决赛/三四名",
 };
 
-type Team = { id: number; name: string; nameZh: string; shortName: string; logoColor: string; stadium: string; founded: number };
+type Team = {
+  id: number;
+  name: string;
+  nameZh: string;
+  shortName: string;
+  logoColor: string;
+  stadium: string;
+  founded: number;
+};
 
 type MatchDetail = {
   id: number;
@@ -37,7 +45,11 @@ type MatchDetail = {
   commentCount: number;
 };
 
-export default function MatchDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default function MatchDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = use(params);
   const [match, setMatch] = useState<MatchDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -50,7 +62,8 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
     const controller = new AbortController();
     fetch(`/api/matches/${id}`, { signal: controller.signal })
       .then((res) => {
-        if (!res.ok) throw new Error(res.status === 404 ? "比赛不存在" : "加载失败");
+        if (!res.ok)
+          throw new Error(res.status === 404 ? "比赛不存在" : "加载失败");
         return res.json();
       })
       .then((json) => {
@@ -66,27 +79,41 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
     return () => controller.abort();
   }, [id, refreshKey]);
 
-  if (loading) return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
-      <LoadingSpinner count={3} />
-    </main>
-  );
+  if (loading)
+    return (
+      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
+        <LoadingSpinner count={3} />
+      </main>
+    );
 
-  if (error) return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
-      <ErrorBanner message={error} onRetry={reload} />
-    </main>
-  );
+  if (error)
+    return (
+      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
+        <ErrorBanner message={error} onRetry={reload} />
+      </main>
+    );
 
-  if (!match) return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
-      <EmptyState icon="🏟" title="比赛不存在" description="请检查链接是否正确" />
-    </main>
-  );
+  if (!match)
+    return (
+      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10">
+        <EmptyState
+          icon="🏟"
+          title="比赛不存在"
+          description="请检查链接是否正确"
+        />
+      </main>
+    );
 
   const date = new Date(match.matchDate);
-  const dateStr = date.toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric" });
-  const timeStr = date.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
+  const dateStr = date.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const timeStr = date.toLocaleTimeString("zh-CN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-10 sm:px-10 sm:py-16">
@@ -94,8 +121,12 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
       <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-sm font-semibold text-blue-700">{STAGE_LABELS[match.matchday] ?? `第${match.matchday}轮`}</p>
-            <p className="text-sm text-slate-500 mt-1">{dateStr} · {timeStr}</p>
+            <p className="text-sm font-semibold text-blue-700">
+              {STAGE_LABELS[match.matchday] ?? `第${match.matchday}轮`}
+            </p>
+            <p className="text-sm text-slate-500 mt-1">
+              {dateStr} · {timeStr}
+            </p>
           </div>
           <StatusBadge status={match.status} />
         </div>
@@ -130,7 +161,9 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
         </div>
 
         {match.venue && (
-          <p className="mt-4 text-center text-sm text-slate-500">🏟 {match.venue}</p>
+          <p className="mt-4 text-center text-sm text-slate-500">
+            🏟 {match.venue}
+          </p>
         )}
       </div>
 
@@ -139,16 +172,24 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
         <h2 className="text-xl font-bold text-slate-900 mb-5">
           🔮 比分预测
           {match.predictionCount > 0 && (
-            <span className="ml-2 text-sm font-normal text-slate-500">({match.predictionCount} 人已预测)</span>
+            <span className="ml-2 text-sm font-normal text-slate-500">
+              ({match.predictionCount} 人已预测)
+            </span>
           )}
         </h2>
         {match.status === "scheduled" ? (
           <div className="space-y-6">
             <PredictionForm matchId={match.id} onPredicted={reload} />
-            <PredictionLeaderboard matchId={match.id} refreshKey={match.predictionCount} />
+            <PredictionLeaderboard
+              matchId={match.id}
+              refreshKey={match.predictionCount}
+            />
           </div>
         ) : (
-          <PredictionLeaderboard matchId={match.id} refreshKey={match.predictionCount} />
+          <PredictionLeaderboard
+            matchId={match.id}
+            refreshKey={match.predictionCount}
+          />
         )}
       </section>
 
@@ -158,7 +199,9 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
           <h2 className="text-xl font-bold text-slate-900 mb-5">
             💬 赛后讨论
             {match.commentCount > 0 && (
-              <span className="ml-2 text-sm font-normal text-slate-500">({match.commentCount} 条评论)</span>
+              <span className="ml-2 text-sm font-normal text-slate-500">
+                ({match.commentCount} 条评论)
+              </span>
             )}
           </h2>
           <div className="space-y-6">

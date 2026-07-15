@@ -33,7 +33,10 @@ export function CommentForm({ matchId, onCommented }: CommentFormProps) {
       const res = await fetch(`/api/matches/${matchId}/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userName: userName.trim(), content: content.trim() }),
+        body: JSON.stringify({
+          userName: userName.trim(),
+          content: content.trim(),
+        }),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -50,11 +53,17 @@ export function CommentForm({ matchId, onCommented }: CommentFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <form
+      onSubmit={handleSubmit}
+      className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+    >
       <h3 className="font-semibold text-slate-900 mb-4">发表评论</h3>
       <div className="grid gap-4 sm:grid-cols-4">
         <div>
-          <label htmlFor="comment-userName" className="block text-xs font-semibold text-slate-600 mb-1">
+          <label
+            htmlFor="comment-userName"
+            className="block text-xs font-semibold text-slate-600 mb-1"
+          >
             用户名
           </label>
           <input
@@ -68,7 +77,10 @@ export function CommentForm({ matchId, onCommented }: CommentFormProps) {
           />
         </div>
         <div className="sm:col-span-3">
-          <label htmlFor="comment-content" className="block text-xs font-semibold text-slate-600 mb-1">
+          <label
+            htmlFor="comment-content"
+            className="block text-xs font-semibold text-slate-600 mb-1"
+          >
             评论
           </label>
           <textarea

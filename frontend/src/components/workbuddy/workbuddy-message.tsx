@@ -9,7 +9,9 @@ export function WorkBuddyMessage({ role, content }: MessageProps) {
     <div className={`flex gap-3 ${isAgent ? "" : "flex-row-reverse"}`}>
       <div
         className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
-          isAgent ? "bg-violet-100 text-violet-700" : "bg-blue-100 text-blue-700"
+          isAgent
+            ? "bg-violet-100 text-violet-700"
+            : "bg-blue-100 text-blue-700"
         }`}
       >
         {isAgent ? "🤖" : "👤"}

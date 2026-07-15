@@ -1,6 +1,10 @@
 import { Inject, Provide } from "@midwayjs/core";
 import { TeamService } from "./team.service";
-import { CreatePredictionInput, Prediction, UpdatePredictionInput } from "../interface";
+import {
+  CreatePredictionInput,
+  Prediction,
+  UpdatePredictionInput,
+} from "../interface";
 
 type PredictionRow = {
   id: number;
@@ -52,7 +56,10 @@ export class PredictionService {
         .get(result.lastInsertRowid) as PredictionRow;
       return mapPrediction(row);
     } catch (e) {
-      if (e instanceof Error && e.message.includes("UNIQUE constraint failed")) {
+      if (
+        e instanceof Error &&
+        e.message.includes("UNIQUE constraint failed")
+      ) {
         throw new Error("你已经对该比赛做出过预测，无法重复提交");
       }
       throw e;
@@ -98,14 +105,18 @@ export class PredictionService {
 
   listByMatch(matchId: number): Prediction[] {
     const rows = this.db
-      .prepare("SELECT * FROM predictions WHERE match_id = ? ORDER BY created_at DESC")
+      .prepare(
+        "SELECT * FROM predictions WHERE match_id = ? ORDER BY created_at DESC",
+      )
       .all(matchId) as PredictionRow[];
     return rows.map(mapPrediction);
   }
 
   listByUser(userName: string): Prediction[] {
     const rows = this.db
-      .prepare("SELECT * FROM predictions WHERE user_name = ? ORDER BY created_at DESC")
+      .prepare(
+        "SELECT * FROM predictions WHERE user_name = ? ORDER BY created_at DESC",
+      )
       .all(userName) as PredictionRow[];
     return rows.map(mapPrediction);
   }

@@ -15,7 +15,7 @@
 | --------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 根目录          | 合理               | `frontend → backend` 之外，将需求、契约、文档、脚本和部署配置独立出来，符合 `specs → contracts → implementation → checks` 的信息流。                                |
 | Next.js 前端    | 基本合理           | 已使用 App Router、TypeScript、Tailwind 和同源 `/api/*` rewrite；但当前纯展示数据仍在 Client Component 的 Effect 中获取，也没有路由级 `loading.tsx` / `error.tsx`。 |
-| Midway.js 后端  | 可作为最小示例     | Controller 与 Service 已分开并使用依赖注入；但 `CourseService` 同时承担业务、建表、种子和 SQL，功能增长后需要 Repository 与 Migration 边界。                        |
+| Midway.js 后端  | 可作为最小示例     | Controller 与 Service 已分开并使用依赖注入；但 `TeamService` 同时承担业务、建表、种子和 SQL，功能增长后需要 Repository 与 Migration 边界。                          |
 | Spec / Contract | 目录合理、约束不足 | 已有示例文件，但原先没有明确触发条件、模板、AC 追溯和完成定义；本次已补充规范。                                                                                     |
 | 验证链          | 不足               | `npm run check` 能执行 lint、单元测试和构建，但没有 OpenAPI lint、真实 API Contract Test 或端到端验收。                                                             |
 

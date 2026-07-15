@@ -410,8 +410,18 @@ components:
     MatchWithTeams:
       type: object
       required:
-        [id, homeTeamId, awayTeamId, matchDate, matchday, status,
-         homeTeam, awayTeam, predictionCount, commentCount]
+        [
+          id,
+          homeTeamId,
+          awayTeamId,
+          matchDate,
+          matchday,
+          status,
+          homeTeam,
+          awayTeam,
+          predictionCount,
+          commentCount,
+        ]
       properties:
         id:
           type: integer
@@ -447,8 +457,20 @@ components:
     Standing:
       type: object
       required:
-        [teamId, teamName, teamNameZh, shortName, played, wins,
-         draws, losses, goalsFor, goalsAgainst, goalDifference, points]
+        [
+          teamId,
+          teamName,
+          teamNameZh,
+          shortName,
+          played,
+          wins,
+          draws,
+          losses,
+          goalsFor,
+          goalsAgainst,
+          goalDifference,
+          points,
+        ]
       properties:
         teamId:
           type: integer
@@ -477,7 +499,8 @@ components:
 
     Prediction:
       type: object
-      required: [id, matchId, userName, homeScore, awayScore, createdAt, updatedAt]
+      required:
+        [id, matchId, userName, homeScore, awayScore, createdAt, updatedAt]
       properties:
         id:
           type: integer

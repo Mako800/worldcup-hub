@@ -1,4 +1,7 @@
-import type { CreatePredictionInput, UpdatePredictionInput } from "../interface";
+import type {
+  CreatePredictionInput,
+  UpdatePredictionInput,
+} from "../interface";
 
 export function parsePredictionInput(value: unknown): CreatePredictionInput {
   if (!isRecord(value)) {
@@ -23,7 +26,9 @@ export function parsePredictionInput(value: unknown): CreatePredictionInput {
   return { matchId, userName, homeScore, awayScore };
 }
 
-export function parseUpdatePredictionInput(value: unknown): UpdatePredictionInput {
+export function parseUpdatePredictionInput(
+  value: unknown,
+): UpdatePredictionInput {
   if (!isRecord(value)) {
     throw new TypeError("请求体必须是 JSON 对象");
   }
@@ -46,7 +51,12 @@ export function parseUpdatePredictionInput(value: unknown): UpdatePredictionInpu
 }
 
 function toInteger(value: unknown, field: string): number {
-  if (typeof value === "number" && Number.isFinite(value) && Number.isInteger(value)) return value;
+  if (
+    typeof value === "number" &&
+    Number.isFinite(value) &&
+    Number.isInteger(value)
+  )
+    return value;
   if (typeof value === "string" && /^\d+$/.test(value)) return Number(value);
   throw new TypeError(`${field} 必须是整数`);
 }

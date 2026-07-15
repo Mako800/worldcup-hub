@@ -43,10 +43,18 @@ for (const p of REQUIRED_PATHS) {
 // ===== Required Schemas =====
 
 const REQUIRED_SCHEMAS = [
-  "Health", "Team", "MatchWithTeams", "Standing",
-  "Prediction", "CreatePrediction", "UpdatePrediction",
-  "Comment", "CreateComment",
-  "AgentRequest", "AgentResponse", "Error",
+  "Health",
+  "Team",
+  "MatchWithTeams",
+  "Standing",
+  "Prediction",
+  "CreatePrediction",
+  "UpdatePrediction",
+  "Comment",
+  "CreateComment",
+  "AgentRequest",
+  "AgentResponse",
+  "Error",
 ];
 
 for (const s of REQUIRED_SCHEMAS) {
@@ -131,7 +139,10 @@ test("Error schema has error and message fields", () => {
 test("POST /api/predictions returns 409 for duplicate", () => {
   const op = doc.paths["/api/predictions"].post;
   assert.ok(op.responses["409"]);
-  assert.equal(op.responses["409"].content["application/json"].schema.$ref, "#/components/schemas/Error");
+  assert.equal(
+    op.responses["409"].content["application/json"].schema.$ref,
+    "#/components/schemas/Error",
+  );
 });
 
 test("POST /api/predictions returns 400 for invalid input", () => {

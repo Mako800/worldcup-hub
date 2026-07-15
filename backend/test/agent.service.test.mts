@@ -3,7 +3,10 @@ import { test } from "node:test";
 import { parseAgentInput } from "../src/utils/agent-input.ts";
 
 test("parseAgentInput accepts valid message", () => {
-  const result = parseAgentInput({ message: "积分榜排名", userName: "测试用户" });
+  const result = parseAgentInput({
+    message: "积分榜排名",
+    userName: "测试用户",
+  });
   assert.deepEqual(result, { message: "积分榜排名", userName: "测试用户" });
 });
 

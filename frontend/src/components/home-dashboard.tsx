@@ -6,7 +6,13 @@ import { MatchCard } from "@/components/matches/match-card";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { ErrorBanner } from "@/components/shared/error-banner";
 
-type Team = { id: number; name: string; nameZh: string; shortName: string; logoColor: string };
+type Team = {
+  id: number;
+  name: string;
+  nameZh: string;
+  shortName: string;
+  logoColor: string;
+};
 type MatchData = {
   id: number;
   homeTeam: Team;
@@ -75,11 +81,19 @@ export function HomeDashboard() {
       <div className="flex items-center gap-2">
         <div
           className={`h-2.5 w-2.5 rounded-full ${
-            health ? "bg-emerald-500" : error ? "bg-rose-500" : "bg-amber-500 animate-pulse"
+            health
+              ? "bg-emerald-500"
+              : error
+                ? "bg-rose-500"
+                : "bg-amber-500 animate-pulse"
           }`}
         />
         <span className="text-sm font-medium text-slate-600">
-          {health ? `API 已连接 · ${health}` : error ? "API 连接失败" : "正在连接 API…"}
+          {health
+            ? `API 已连接 · ${health}`
+            : error
+              ? "API 连接失败"
+              : "正在连接 API…"}
         </span>
       </div>
 
@@ -97,7 +111,9 @@ export function HomeDashboard() {
             >
               <span className="text-3xl">📅</span>
               <h3 className="mt-3 text-lg font-bold">浏览赛事</h3>
-              <p className="mt-1 text-sm text-blue-200">查看全部赛程与比赛结果</p>
+              <p className="mt-1 text-sm text-blue-200">
+                查看全部赛程与比赛结果
+              </p>
             </Link>
             <Link
               href="/predictions"
@@ -105,7 +121,9 @@ export function HomeDashboard() {
             >
               <span className="text-3xl">🔮</span>
               <h3 className="mt-3 text-lg font-bold">比分预测</h3>
-              <p className="mt-1 text-sm text-emerald-200">预测即将开始比赛的比分</p>
+              <p className="mt-1 text-sm text-emerald-200">
+                预测即将开始比赛的比分
+              </p>
             </Link>
             <Link
               href="/workbuddy"
@@ -113,15 +131,22 @@ export function HomeDashboard() {
             >
               <span className="text-3xl">🤖</span>
               <h3 className="mt-3 text-lg font-bold">WorkBuddy</h3>
-              <p className="mt-1 text-sm text-violet-200">AI 助手帮你了解赛事信息</p>
+              <p className="mt-1 text-sm text-violet-200">
+                AI 助手帮你了解赛事信息
+              </p>
             </Link>
           </div>
 
           {/* Upcoming Matches */}
           <section>
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-2xl font-bold text-slate-900">即将开始的比赛</h2>
-              <Link href="/matches" className="text-sm font-semibold text-blue-700 hover:underline">
+              <h2 className="text-2xl font-bold text-slate-900">
+                即将开始的比赛
+              </h2>
+              <Link
+                href="/matches"
+                className="text-sm font-semibold text-blue-700 hover:underline"
+              >
                 查看全部 →
               </Link>
             </div>
@@ -139,8 +164,13 @@ export function HomeDashboard() {
           {/* Top Standings */}
           <section>
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-2xl font-bold text-slate-900">积分榜 TOP 5</h2>
-              <Link href="/standings" className="text-sm font-semibold text-blue-700 hover:underline">
+              <h2 className="text-2xl font-bold text-slate-900">
+                积分榜 TOP 5
+              </h2>
+              <Link
+                href="/standings"
+                className="text-sm font-semibold text-blue-700 hover:underline"
+              >
                 查看完整积分榜 →
               </Link>
             </div>
@@ -157,13 +187,19 @@ export function HomeDashboard() {
                 <tbody className="divide-y divide-slate-100">
                   {standings.map((s, i) => (
                     <tr key={s.teamId} className="hover:bg-slate-50">
-                      <td className="px-5 py-3 font-mono text-xs font-bold text-slate-400">{i + 1}</td>
+                      <td className="px-5 py-3 font-mono text-xs font-bold text-slate-400">
+                        {i + 1}
+                      </td>
                       <td className="px-5 py-3 font-semibold text-slate-900">
                         {s.teamNameZh}
-                        <span className="ml-2 text-xs text-slate-400">{s.shortName}</span>
+                        <span className="ml-2 text-xs text-slate-400">
+                          {s.shortName}
+                        </span>
                       </td>
                       <td className="px-5 py-3 text-center">{s.played}</td>
-                      <td className="px-5 py-3 text-center font-bold text-slate-900">{s.points}</td>
+                      <td className="px-5 py-3 text-center font-bold text-slate-900">
+                        {s.points}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

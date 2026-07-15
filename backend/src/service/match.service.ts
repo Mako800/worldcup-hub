@@ -97,7 +97,9 @@ export class MatchService {
 
   getMatchdayRange(): { min: number; max: number } {
     const row = this.db
-      .prepare("SELECT MIN(matchday) as min_md, MAX(matchday) as max_md FROM matches")
+      .prepare(
+        "SELECT MIN(matchday) as min_md, MAX(matchday) as max_md FROM matches",
+      )
       .get() as { min_md: number; max_md: number };
     return { min: row.min_md, max: row.max_md };
   }

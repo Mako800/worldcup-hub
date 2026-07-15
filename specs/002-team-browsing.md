@@ -43,10 +43,10 @@
 
 ## 验证映射
 
-| AC | 验证方式 | 命令或步骤 | 结果 |
-|----|---------|-----------|------|
-| AC-01 | API Test | `curl http://localhost:7001/api/teams` | ✅ 通过 |
-| AC-02 | API Test | `curl http://localhost:7001/api/teams/1` | ✅ 通过 |
+| AC    | 验证方式 | 命令或步骤                                 | 结果    |
+| ----- | -------- | ------------------------------------------ | ------- |
+| AC-01 | API Test | `curl http://localhost:7001/api/teams`     | ✅ 通过 |
+| AC-02 | API Test | `curl http://localhost:7001/api/teams/1`   | ✅ 通过 |
 | AC-03 | API Test | `curl http://localhost:7001/api/teams/999` | ✅ 通过 |
-| AC-04 | 人工验收 | 浏览器访问 `/teams` | ✅ 通过 |
-| AC-05 | 人工验收 | 点击球队卡片 | ✅ 通过 |
+| AC-04 | 人工验收 | 浏览器访问 `/teams`                        | ✅ 通过 |
+| AC-05 | 人工验收 | 点击球队卡片                               | ✅ 通过 |

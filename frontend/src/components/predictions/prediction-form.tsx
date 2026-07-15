@@ -57,12 +57,18 @@ export function PredictionForm({ matchId, onPredicted }: PredictionFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <form
+      onSubmit={handleSubmit}
+      className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+    >
       <h3 className="font-semibold text-slate-900 mb-4">提交你的预测</h3>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <div>
-          <label htmlFor="userName" className="block text-xs font-semibold text-slate-600 mb-1">
+          <label
+            htmlFor="userName"
+            className="block text-xs font-semibold text-slate-600 mb-1"
+          >
             用户名
           </label>
           <input
@@ -76,7 +82,10 @@ export function PredictionForm({ matchId, onPredicted }: PredictionFormProps) {
           />
         </div>
         <div>
-          <label htmlFor="homeScore" className="block text-xs font-semibold text-slate-600 mb-1">
+          <label
+            htmlFor="homeScore"
+            className="block text-xs font-semibold text-slate-600 mb-1"
+          >
             主队进球
           </label>
           <input
@@ -91,7 +100,10 @@ export function PredictionForm({ matchId, onPredicted }: PredictionFormProps) {
           />
         </div>
         <div>
-          <label htmlFor="awayScore" className="block text-xs font-semibold text-slate-600 mb-1">
+          <label
+            htmlFor="awayScore"
+            className="block text-xs font-semibold text-slate-600 mb-1"
+          >
             客队进球
           </label>
           <input

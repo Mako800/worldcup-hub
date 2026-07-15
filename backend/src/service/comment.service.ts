@@ -32,7 +32,9 @@ export class CommentService {
     }
 
     const result = this.db
-      .prepare("INSERT INTO comments (match_id, user_name, content) VALUES (?, ?, ?)")
+      .prepare(
+        "INSERT INTO comments (match_id, user_name, content) VALUES (?, ?, ?)",
+      )
       .run(matchId, input.userName, input.content);
 
     const row = this.db
@@ -43,7 +45,9 @@ export class CommentService {
 
   listByMatch(matchId: number): Comment[] {
     const rows = this.db
-      .prepare("SELECT * FROM comments WHERE match_id = ? ORDER BY created_at DESC")
+      .prepare(
+        "SELECT * FROM comments WHERE match_id = ? ORDER BY created_at DESC",
+      )
       .all(matchId) as CommentRow[];
     return rows.map(mapComment);
   }

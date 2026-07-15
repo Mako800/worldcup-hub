@@ -135,11 +135,25 @@ export class TeamService {
       ["Argentina", "阿根廷", "ARG", "Estadio Monumental", 1893, "#75aadb"],
       ["Denmark", "丹麦", "DEN", "Parken Stadium", 1889, "#c8102e"],
       ["Nigeria", "尼日利亚", "NGA", "Moshood Abiola Stadium", 1945, "#008753"],
-      ["Saudi Arabia", "沙特阿拉伯", "KSA", "King Fahd Stadium", 1956, "#006c35"],
+      [
+        "Saudi Arabia",
+        "沙特阿拉伯",
+        "KSA",
+        "King Fahd Stadium",
+        1956,
+        "#006c35",
+      ],
       // Group B
       ["France", "法国", "FRA", "Stade de France", 1904, "#002395"],
       ["Uruguay", "乌拉圭", "URU", "Estadio Centenario", 1900, "#5b9bd5"],
-      ["South Korea", "韩国", "KOR", "Seoul World Cup Stadium", 1933, "#c8102e"],
+      [
+        "South Korea",
+        "韩国",
+        "KOR",
+        "Seoul World Cup Stadium",
+        1933,
+        "#c8102e",
+      ],
       ["Canada", "加拿大", "CAN", "BMO Field", 1912, "#d52b1e"],
       // Group C
       ["England", "英格兰", "ENG", "Wembley Stadium", 1863, "#cf081f"],
@@ -199,26 +213,60 @@ export class TeamService {
     // H: 29-NED, 30-BEL, 31-MEX, 32-COL
 
     const groups = [
-      [1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16],
-      [17, 18, 19, 20], [21, 22, 23, 24], [25, 26, 27, 28], [29, 30, 31, 32],
+      [1, 2, 3, 4],
+      [5, 6, 7, 8],
+      [9, 10, 11, 12],
+      [13, 14, 15, 16],
+      [17, 18, 19, 20],
+      [21, 22, 23, 24],
+      [25, 26, 27, 28],
+      [29, 30, 31, 32],
     ];
 
     // Group stage round-robin fixtures: each group [1v2, 3v4], [1v3, 2v4], [1v4, 2v3]
     const groupFixtures: [number, number, number][] = [];
     for (const g of groups) {
-      groupFixtures.push([1, g[0], g[1]], [1, g[2], g[3]]);  // Round 1
-      groupFixtures.push([2, g[0], g[2]], [2, g[1], g[3]]);  // Round 2
-      groupFixtures.push([3, g[0], g[3]], [3, g[1], g[2]]);  // Round 3
+      groupFixtures.push([1, g[0], g[1]], [1, g[2], g[3]]); // Round 1
+      groupFixtures.push([2, g[0], g[2]], [2, g[1], g[3]]); // Round 2
+      groupFixtures.push([3, g[0], g[3]], [3, g[1], g[2]]); // Round 3
     }
 
     // Predefined scores for round 1-2 (finished matches, 32 matches)
     const finishedScores: [number, number][] = [
       // Round 1 (16 matches)
-      [3, 1], [1, 0], [2, 0], [1, 1], [2, 1], [0, 0], [1, 0], [2, 2],
-      [1, 0], [0, 2], [1, 1], [1, 2], [3, 0], [0, 0], [0, 1], [1, 0],
+      [3, 1],
+      [1, 0],
+      [2, 0],
+      [1, 1],
+      [2, 1],
+      [0, 0],
+      [1, 0],
+      [2, 2],
+      [1, 0],
+      [0, 2],
+      [1, 1],
+      [1, 2],
+      [3, 0],
+      [0, 0],
+      [0, 1],
+      [1, 0],
       // Round 2 (16 matches)
-      [2, 0], [0, 1], [2, 2], [3, 1], [1, 1], [0, 2], [2, 0], [1, 0],
-      [2, 1], [0, 0], [1, 0], [2, 1], [1, 1], [0, 1], [0, 3], [2, 0],
+      [2, 0],
+      [0, 1],
+      [2, 2],
+      [3, 1],
+      [1, 1],
+      [0, 2],
+      [2, 0],
+      [1, 0],
+      [2, 1],
+      [0, 0],
+      [1, 0],
+      [2, 1],
+      [1, 1],
+      [0, 1],
+      [0, 3],
+      [2, 0],
     ];
 
     // Insert group stage matches (48 matches total: 32 finished + 16 scheduled)
@@ -228,11 +276,16 @@ export class TeamService {
       const groupLetter = String.fromCharCode(65 + groupIdx); // A-H
 
       // Match dates: rounds 1-2 in early July 2026, round 3 in late July
-      const baseDate = new Date(round === 1 ? "2026-07-04" : round === 2 ? "2026-07-11" : "2026-07-18");
+      const baseDate = new Date(
+        round === 1 ? "2026-07-04" : round === 2 ? "2026-07-11" : "2026-07-18",
+      );
       const dayOffset = (i % 2) * 2 + groupIdx; // spread over days for realism
       const date = new Date(baseDate);
       date.setDate(date.getDate() + dayOffset);
-      const dateStr = date.toISOString().replace("T", " ").replace(/\.\d{3}Z$/, "");
+      const dateStr = date
+        .toISOString()
+        .replace("T", " ")
+        .replace(/\.\d{3}Z$/, "");
 
       const venue = `2026世界杯 ${groupLetter}组`;
 
@@ -242,7 +295,16 @@ export class TeamService {
         insert.run(homeId, awayId, dateStr, round, "finished", h, a, venue);
       } else {
         // Round 3: scheduled (no scores)
-        insert.run(homeId, awayId, dateStr, round, "scheduled", null, null, venue);
+        insert.run(
+          homeId,
+          awayId,
+          dateStr,
+          round,
+          "scheduled",
+          null,
+          null,
+          venue,
+        );
       }
     }
 
@@ -250,22 +312,33 @@ export class TeamService {
     // Placeholder team pairings based on likely group stage outcomes
     const knockoutFixtures: [number, number, number, string][] = [
       // Round of 16 (matchday 4, 8 matches)
-      [4, 1, 6, "2026世界杯 1/8决赛"], [4, 9, 14, "2026世界杯 1/8决赛"],
-      [4, 17, 22, "2026世界杯 1/8决赛"], [4, 25, 30, "2026世界杯 1/8决赛"],
-      [4, 5, 2, "2026世界杯 1/8决赛"], [4, 13, 10, "2026世界杯 1/8决赛"],
-      [4, 21, 18, "2026世界杯 1/8决赛"], [4, 29, 26, "2026世界杯 1/8决赛"],
+      [4, 1, 6, "2026世界杯 1/8决赛"],
+      [4, 9, 14, "2026世界杯 1/8决赛"],
+      [4, 17, 22, "2026世界杯 1/8决赛"],
+      [4, 25, 30, "2026世界杯 1/8决赛"],
+      [4, 5, 2, "2026世界杯 1/8决赛"],
+      [4, 13, 10, "2026世界杯 1/8决赛"],
+      [4, 21, 18, "2026世界杯 1/8决赛"],
+      [4, 29, 26, "2026世界杯 1/8决赛"],
       // Quarter-finals (matchday 5, 4 matches)
-      [5, 1, 9, "2026世界杯 1/4决赛"], [5, 17, 25, "2026世界杯 1/4决赛"],
-      [5, 5, 13, "2026世界杯 1/4决赛"], [5, 21, 29, "2026世界杯 1/4决赛"],
+      [5, 1, 9, "2026世界杯 1/4决赛"],
+      [5, 17, 25, "2026世界杯 1/4决赛"],
+      [5, 5, 13, "2026世界杯 1/4决赛"],
+      [5, 21, 29, "2026世界杯 1/4决赛"],
       // Semi-finals (matchday 6, 2 matches)
-      [6, 1, 17, "2026世界杯 半决赛"], [6, 13, 21, "2026世界杯 半决赛"],
+      [6, 1, 17, "2026世界杯 半决赛"],
+      [6, 13, 21, "2026世界杯 半决赛"],
       // Third place + Final (matchday 7, 2 matches)
-      [7, 17, 21, "2026世界杯 三四名决赛"], [7, 1, 13, "2026世界杯 决赛"],
+      [7, 17, 21, "2026世界杯 三四名决赛"],
+      [7, 1, 13, "2026世界杯 决赛"],
     ];
 
     let koDate = new Date("2026-07-25");
     for (const [md, homeId, awayId, venue] of knockoutFixtures) {
-      const dateStr = koDate.toISOString().replace("T", " ").replace(/\.\d{3}Z$/, "");
+      const dateStr = koDate
+        .toISOString()
+        .replace("T", " ")
+        .replace(/\.\d{3}Z$/, "");
       insert.run(homeId, awayId, dateStr, md, "scheduled", null, null, venue);
       koDate.setDate(koDate.getDate() + 1);
     }
@@ -279,9 +352,17 @@ export class TeamService {
     const insert = this.database.prepare(
       "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
     );
-    const demoUsers = ["球迷小王", "足球老张", "ArgentinaFan", "BrazilFan10", "世界杯达人"];
+    const demoUsers = [
+      "球迷小王",
+      "足球老张",
+      "ArgentinaFan",
+      "BrazilFan10",
+      "世界杯达人",
+    ];
     const finishedMatches = this.database
-      .prepare("SELECT id, home_team_id, away_team_id FROM matches WHERE status = 'finished' LIMIT 15")
+      .prepare(
+        "SELECT id, home_team_id, away_team_id FROM matches WHERE status = 'finished' LIMIT 15",
+      )
       .all() as { id: number; home_team_id: number; away_team_id: number }[];
 
     for (const match of finishedMatches) {
@@ -324,21 +405,27 @@ export class TeamService {
 
   list(): Team[] {
     const rows = this.database
-      .prepare("SELECT id, name, name_zh, short_name, stadium, founded, logo_color FROM teams ORDER BY name")
+      .prepare(
+        "SELECT id, name, name_zh, short_name, stadium, founded, logo_color FROM teams ORDER BY name",
+      )
       .all() as TeamRow[];
     return rows.map(mapTeam);
   }
 
   getById(id: number): Team | undefined {
     const row = this.database
-      .prepare("SELECT id, name, name_zh, short_name, stadium, founded, logo_color FROM teams WHERE id = ?")
+      .prepare(
+        "SELECT id, name, name_zh, short_name, stadium, founded, logo_color FROM teams WHERE id = ?",
+      )
       .get(id) as TeamRow | undefined;
     return row ? mapTeam(row) : undefined;
   }
 
   getByName(name: string): Team | undefined {
     const row = this.database
-      .prepare("SELECT id, name, name_zh, short_name, stadium, founded, logo_color FROM teams WHERE name = ? OR name_zh = ?")
+      .prepare(
+        "SELECT id, name, name_zh, short_name, stadium, founded, logo_color FROM teams WHERE name = ? OR name_zh = ?",
+      )
       .get(name, name) as TeamRow | undefined;
     return row ? mapTeam(row) : undefined;
   }

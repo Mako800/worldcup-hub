@@ -59,7 +59,9 @@ function createTestDb() {
 test("UNIQUE constraint: first prediction succeeds", () => {
   const db = createTestDb();
   const result = db
-    .prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
+    .prepare(
+      "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+    )
     .run(1, "球迷小王", 2, 1);
   assert.ok(result.lastInsertRowid > 0);
   db.close();
@@ -67,13 +69,15 @@ test("UNIQUE constraint: first prediction succeeds", () => {
 
 test("UNIQUE constraint: duplicate prediction throws SQLITE_CONSTRAINT", () => {
   const db = createTestDb();
-  db.prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
-    .run(1, "球迷小王", 2, 1);
+  db.prepare(
+    "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+  ).run(1, "球迷小王", 2, 1);
 
   assert.throws(
     () => {
-      db.prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
-        .run(1, "球迷小王", 3, 0);
+      db.prepare(
+        "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+      ).run(1, "球迷小王", 3, 0);
     },
     (e: any) => e.message.includes("UNIQUE constraint failed"),
   );
@@ -83,10 +87,14 @@ test("UNIQUE constraint: duplicate prediction throws SQLITE_CONSTRAINT", () => {
 test("UNIQUE constraint: same user different matches both succeed", () => {
   const db = createTestDb();
   const r1 = db
-    .prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
+    .prepare(
+      "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+    )
     .run(1, "球迷小王", 2, 1);
   const r2 = db
-    .prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
+    .prepare(
+      "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+    )
     .run(2, "球迷小王", 0, 0);
   assert.ok(r1.lastInsertRowid > 0);
   assert.ok(r2.lastInsertRowid > 0);
@@ -98,17 +106,27 @@ test("UNIQUE constraint: same user different matches both succeed", () => {
 
 test("Multiple users predicting same match: all succeed", () => {
   const db = createTestDb();
-  const users = ["球迷小王", "足球老张", "ArgentinaFan", "BrazilFan10", "世界杯达人"];
+  const users = [
+    "球迷小王",
+    "足球老张",
+    "ArgentinaFan",
+    "BrazilFan10",
+    "世界杯达人",
+  ];
 
   for (const user of users) {
     const result = db
-      .prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
+      .prepare(
+        "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+      )
       .run(1, user, 2, 1);
     assert.ok(result.lastInsertRowid > 0, `User ${user} should succeed`);
   }
 
   // Verify count
-  const count = db.prepare("SELECT COUNT(*) as c FROM predictions WHERE match_id = 1").get() as { c: number };
+  const count = db
+    .prepare("SELECT COUNT(*) as c FROM predictions WHERE match_id = 1")
+    .get() as { c: number };
   assert.equal(count.c, users.length);
   db.close();
 });
@@ -116,13 +134,16 @@ test("Multiple users predicting same match: all succeed", () => {
 test("Rapid sequential same-user same-match inserts: first wins, second fails", () => {
   const db = createTestDb();
   const first = db
-    .prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
+    .prepare(
+      "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+    )
     .run(1, "快速用户", 1, 0);
   assert.ok(first.lastInsertRowid > 0);
 
   assert.throws(() => {
-    db.prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
-      .run(1, "快速用户", 2, 2);
+    db.prepare(
+      "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+    ).run(1, "快速用户", 2, 2);
   }, /UNIQUE constraint failed/);
   db.close();
 });
@@ -131,9 +152,9 @@ test("Rapid sequential same-user same-match inserts: first wins, second fails", 
 
 test("Cannot predict on finished match (status check)", () => {
   const db = createTestDb();
-  const match = db
-    .prepare("SELECT status FROM matches WHERE id = 2")
-    .get() as { status: string };
+  const match = db.prepare("SELECT status FROM matches WHERE id = 2").get() as {
+    status: string;
+  };
   assert.equal(match.status, "finished");
   // A proper service would reject this before insert, but the DB itself allows it
   // The business logic layer must check: if (match.status !== 'scheduled') throw
@@ -143,9 +164,9 @@ test("Cannot predict on finished match (status check)", () => {
 
 test("Can predict on scheduled match (status check)", () => {
   const db = createTestDb();
-  const match = db
-    .prepare("SELECT status FROM matches WHERE id = 1")
-    .get() as { status: string };
+  const match = db.prepare("SELECT status FROM matches WHERE id = 1").get() as {
+    status: string;
+  };
   assert.equal(match.status, "scheduled");
   db.close();
 });
@@ -155,14 +176,19 @@ test("Can predict on scheduled match (status check)", () => {
 test("Update prediction changes scores but not match_id or user_name", () => {
   const db = createTestDb();
   const insert = db
-    .prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
+    .prepare(
+      "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+    )
     .run(1, "测试用户", 1, 1);
 
-  db.prepare("UPDATE predictions SET home_score = ?, away_score = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?")
-    .run(3, 2, insert.lastInsertRowid);
+  db.prepare(
+    "UPDATE predictions SET home_score = ?, away_score = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+  ).run(3, 2, insert.lastInsertRowid);
 
   const updated = db
-    .prepare("SELECT home_score, away_score, user_name, match_id FROM predictions WHERE id = ?")
+    .prepare(
+      "SELECT home_score, away_score, user_name, match_id FROM predictions WHERE id = ?",
+    )
     .get(insert.lastInsertRowid) as any;
 
   assert.equal(updated.home_score, 3);
@@ -178,13 +204,17 @@ test("Score boundary values: 0 and 20 are accepted", () => {
   const db = createTestDb();
   // Score 0-0
   const r1 = db
-    .prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
+    .prepare(
+      "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+    )
     .run(1, "用户零分", 0, 0);
   assert.ok(r1.lastInsertRowid > 0);
 
   // Score 20-20
   const r2 = db
-    .prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
+    .prepare(
+      "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+    )
     .run(1, "用户满分", 20, 20);
   assert.ok(r2.lastInsertRowid > 0);
   db.close();
@@ -195,10 +225,13 @@ test("Score boundary values: 0 and 20 are accepted", () => {
 test("Prediction count matches expected", () => {
   const db = createTestDb();
   for (let i = 0; i < 5; i++) {
-    db.prepare("INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)")
-      .run(1, `用户${i}`, i, i + 1);
+    db.prepare(
+      "INSERT INTO predictions (match_id, user_name, home_score, away_score) VALUES (?, ?, ?, ?)",
+    ).run(1, `用户${i}`, i, i + 1);
   }
-  const row = db.prepare("SELECT COUNT(*) as c FROM predictions WHERE match_id = 1").get() as { c: number };
+  const row = db
+    .prepare("SELECT COUNT(*) as c FROM predictions WHERE match_id = 1")
+    .get() as { c: number };
   assert.equal(row.c, 5);
   db.close();
 });
@@ -214,7 +247,9 @@ test("Predictions are ordered by creation time (descending)", () => {
   insert.run(1, "顺序用户2", 1, 1, "2026-07-10 10:00:02");
 
   const rows = db
-    .prepare("SELECT user_name FROM predictions WHERE match_id = 1 ORDER BY created_at DESC")
+    .prepare(
+      "SELECT user_name FROM predictions WHERE match_id = 1 ORDER BY created_at DESC",
+    )
     .all() as { user_name: string }[];
   assert.equal(rows.length, 3);
   assert.equal(rows[0].user_name, "顺序用户2");
@@ -237,9 +272,15 @@ test("Multiple comments on same match all succeed (no UNIQUE constraint)", () =>
   `);
 
   // Same user can post multiple comments on the same match
-  const c1 = db.prepare("INSERT INTO comments (match_id, user_name, content) VALUES (?, ?, ?)")
+  const c1 = db
+    .prepare(
+      "INSERT INTO comments (match_id, user_name, content) VALUES (?, ?, ?)",
+    )
     .run(2, "球迷小王", "精彩比赛！");
-  const c2 = db.prepare("INSERT INTO comments (match_id, user_name, content) VALUES (?, ?, ?)")
+  const c2 = db
+    .prepare(
+      "INSERT INTO comments (match_id, user_name, content) VALUES (?, ?, ?)",
+    )
     .run(2, "球迷小王", "下半场太刺激了！");
   assert.ok(c1.lastInsertRowid > 0);
   assert.ok(c2.lastInsertRowid > 0);
