@@ -311,6 +311,8 @@ paths:
                     $ref: "#/components/schemas/Comment"
         "400":
           $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
 
   /api/agent/chat:
     post:

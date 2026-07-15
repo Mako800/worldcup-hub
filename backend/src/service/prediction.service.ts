@@ -68,7 +68,9 @@ export class PredictionService {
       throw new Error("预测记录不存在");
     }
 
-    // Verify ownership: only the creator can update their prediction
+    // Verify ownership: only the creator can update their prediction.
+    // NOTE: This project uses self-claimed identity (no auth system).
+    // In production, identity would come from a session/JWT, not the request body.
     if (existing.user_name !== input.userName) {
       throw new Error("无权修改该预测记录");
     }

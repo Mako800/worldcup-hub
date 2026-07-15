@@ -35,6 +35,9 @@ export class CommentController {
       return { data: this.commentService.create(numId, input) };
     } catch (reason) {
       const message = reason instanceof Error ? reason.message : "评论数据无效";
+      if (message.includes("不存在")) {
+        throw new httpError.NotFoundError(message);
+      }
       throw new httpError.BadRequestError(message);
     }
   }
