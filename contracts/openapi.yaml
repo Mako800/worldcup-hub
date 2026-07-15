@@ -1,14 +1,17 @@
 openapi: 3.1.0
 info:
-  title: Web Development Course API
-  version: 0.1.0
+  title: World Cup Match Information & Interactive Prediction Platform API
+  version: 0.3.0
+  description: 世界杯赛事信息与互动预测平台 API
 servers:
   - url: http://localhost:7001
+    description: 本地开发服务器
 paths:
   /api/health:
     get:
       operationId: getHealth
       summary: 检查 API 状态
+      tags: [Health]
       responses:
         "200":
           description: API 正常
@@ -16,13 +19,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Health"
-  /api/courses:
+
+  /api/teams:
     get:
-      operationId: listCourses
-      summary: 获取课程列表
+      operationId: listTeams
+      summary: 获取所有球队
+      tags: [Teams]
       responses:
         "200":
-          description: 课程列表
+          description: 球队列表
           content:
             application/json:
               schema:
@@ -32,19 +37,22 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Course"
-    post:
-      operationId: createCourse
-      summary: 创建课程
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateCourse"
+                      $ref: "#/components/schemas/Team"
+
+  /api/teams/{id}:
+    get:
+      operationId: getTeam
+      summary: 获取单个球队详情
+      tags: [Teams]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         "200":
-          description: 创建成功
+          description: 球队详情
           content:
             application/json:
               schema:
@@ -52,10 +60,313 @@ paths:
                 required: [data]
                 properties:
                   data:
-                    $ref: "#/components/schemas/Course"
+                    $ref: "#/components/schemas/Team"
         "400":
-          description: 请求体不符合课程数据规则
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /api/matches:
+    get:
+      operationId: listMatches
+      summary: 获取比赛列表，支持筛选
+      tags: [Matches]
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [scheduled, live, finished]
+        - name: matchday
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 7
+        - name: teamId
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: 比赛列表
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MatchWithTeams"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /api/matches/upcoming:
+    get:
+      operationId: listUpcomingMatches
+      summary: 获取即将开始的比赛
+      tags: [Matches]
+      responses:
+        "200":
+          description: 即将开始的比赛列表
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MatchWithTeams"
+
+  /api/matches/{id}:
+    get:
+      operationId: getMatch
+      summary: 获取单场比赛详情
+      tags: [Matches]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: 比赛详情
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/MatchWithTeams"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /api/standings:
+    get:
+      operationId: getStandings
+      summary: 获取积分榜
+      tags: [Standings]
+      responses:
+        "200":
+          description: 积分榜
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Standing"
+
+  /api/predictions:
+    get:
+      operationId: listPredictions
+      summary: 查询预测记录
+      tags: [Predictions]
+      parameters:
+        - name: matchId
+          in: query
+          schema:
+            type: integer
+        - name: userName
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 预测列表
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Prediction"
+    post:
+      operationId: createPrediction
+      summary: 创建比分预测
+      tags: [Predictions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrediction"
+      responses:
+        "201":
+          description: 预测创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Prediction"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          description: 该用户已对该比赛做出预测
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/predictions/{id}:
+    patch:
+      operationId: updatePrediction
+      summary: 更新比分预测
+      tags: [Predictions]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePrediction"
+      responses:
+        "200":
+          description: 预测更新成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Prediction"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /api/matches/{matchId}/comments:
+    get:
+      operationId: listComments
+      summary: 获取比赛评论
+      tags: [Comments]
+      parameters:
+        - name: matchId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: 评论列表
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Comment"
+    post:
+      operationId: createComment
+      summary: 发表赛后评论
+      tags: [Comments]
+      parameters:
+        - name: matchId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateComment"
+      responses:
+        "201":
+          description: 评论创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Comment"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /api/agent/chat:
+    post:
+      operationId: agentChat
+      summary: 向 WorkBuddy 助手发送消息
+      tags: [Agent]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgentRequest"
+      responses:
+        "200":
+          description: 助手回复
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /api/agent/suggestions:
+    get:
+      operationId: agentSuggestions
+      summary: 获取推荐问题
+      tags: [Agent]
+      responses:
+        "200":
+          description: 推荐问题列表
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+
 components:
+  responses:
+    BadRequest:
+      description: 请求参数无效
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: 资源不存在
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
   schemas:
     Health:
       type: object
@@ -68,29 +379,214 @@ components:
         timestamp:
           type: string
           format: date-time
-    Course:
+
+    Team:
       type: object
-      required: [id, title, description, createdAt]
+      required: [id, name, nameZh, shortName, stadium, founded, logoColor]
       properties:
         id:
           type: integer
-        title:
+        name:
           type: string
-        description:
+          description: 英文名称
+        nameZh:
+          type: string
+          description: 中文名称
+        shortName:
+          type: string
+          description: 缩写
+        stadium:
+          type: string
+          description: 主场球场
+        founded:
+          type: integer
+          description: 成立年份
+        logoColor:
+          type: string
+          description: 主题色
+
+    MatchWithTeams:
+      type: object
+      required:
+        [id, homeTeamId, awayTeamId, matchDate, matchday, status,
+         homeTeam, awayTeam, predictionCount, commentCount]
+      properties:
+        id:
+          type: integer
+        homeTeamId:
+          type: integer
+        awayTeamId:
+          type: integer
+        matchDate:
+          type: string
+        matchday:
+          type: integer
+        status:
+          type: string
+          enum: [scheduled, live, finished]
+        homeScore:
+          type: integer
+          nullable: true
+        awayScore:
+          type: integer
+          nullable: true
+        venue:
+          type: string
+          nullable: true
+        homeTeam:
+          $ref: "#/components/schemas/Team"
+        awayTeam:
+          $ref: "#/components/schemas/Team"
+        predictionCount:
+          type: integer
+        commentCount:
+          type: integer
+
+    Standing:
+      type: object
+      required:
+        [teamId, teamName, teamNameZh, shortName, played, wins,
+         draws, losses, goalsFor, goalsAgainst, goalDifference, points]
+      properties:
+        teamId:
+          type: integer
+        teamName:
+          type: string
+        teamNameZh:
+          type: string
+        shortName:
+          type: string
+        played:
+          type: integer
+        wins:
+          type: integer
+        draws:
+          type: integer
+        losses:
+          type: integer
+        goalsFor:
+          type: integer
+        goalsAgainst:
+          type: integer
+        goalDifference:
+          type: integer
+        points:
+          type: integer
+
+    Prediction:
+      type: object
+      required: [id, matchId, userName, homeScore, awayScore, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        matchId:
+          type: integer
+        userName:
+          type: string
+        homeScore:
+          type: integer
+        awayScore:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CreatePrediction:
+      type: object
+      additionalProperties: false
+      required: [matchId, userName, homeScore, awayScore]
+      properties:
+        matchId:
+          type: integer
+        userName:
+          type: string
+          minLength: 2
+          maxLength: 30
+        homeScore:
+          type: integer
+          minimum: 0
+          maximum: 20
+        awayScore:
+          type: integer
+          minimum: 0
+          maximum: 20
+
+    UpdatePrediction:
+      type: object
+      additionalProperties: false
+      required: [homeScore, awayScore]
+      properties:
+        homeScore:
+          type: integer
+          minimum: 0
+          maximum: 20
+        awayScore:
+          type: integer
+          minimum: 0
+          maximum: 20
+
+    Comment:
+      type: object
+      required: [id, matchId, userName, content, createdAt]
+      properties:
+        id:
+          type: integer
+        matchId:
+          type: integer
+        userName:
+          type: string
+        content:
           type: string
         createdAt:
           type: string
           format: date-time
-    CreateCourse:
+
+    CreateComment:
       type: object
       additionalProperties: false
-      required: [title, description]
+      required: [userName, content]
       properties:
-        title:
+        userName:
           type: string
           minLength: 2
-          maxLength: 80
-        description:
+          maxLength: 30
+        content:
           type: string
           minLength: 2
+          maxLength: 1000
+
+    AgentRequest:
+      type: object
+      additionalProperties: false
+      required: [message, userName]
+      properties:
+        message:
+          type: string
+          minLength: 1
           maxLength: 500
+        userName:
+          type: string
+          minLength: 2
+          maxLength: 30
+
+    AgentResponse:
+      type: object
+      required: [reply, intent]
+      properties:
+        reply:
+          type: string
+        intent:
+          type: string
+        data: {}
+
+    Error:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+        message:
+          type: string
